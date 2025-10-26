@@ -1,0 +1,19 @@
+{
+  "name": "todo-angularjs-legacy",
+  "version": "1.0.0",
+  "description": "Legacy AngularJS 1.x TODO app assignment",
+  "scripts": {
+    "dev": "live-server ./src --port=3000 --watch=src",
+    "test": "karma start"
+  },
+  "devDependencies": {
+    "angular": "1.8.3",
+    "angular-route": "1.8.3",
+    "angular-mocks": "1.8.3",
+    "jasmine-core": "^5.1.0",
+    "karma": "^6.4.4",
+    "karma-chrome-launcher": "^3.2.0",
+    "karma-jasmine": "^5.1.0",
+    "live-server": "^1.2.2"
+  }
+}

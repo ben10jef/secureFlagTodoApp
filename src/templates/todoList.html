@@ -1,0 +1,115 @@
+<div class="wrapper" ng-class="{'is-empty': !filteredTasks().length}">
+
+    <!-- Global App Header / Filter Nav -->
+    <top-bar current-filter="currentFilter"></top-bar>
+
+    <!-- Main 2-column layout -->
+    <section class="layout-shell container-fluid">
+
+        <!-- LEFT: Add Task -->
+        <section class="add-pane card shadow-sm">
+            <div class="card-body add-pane-inner">
+
+                <div class="d-flex align-items-center gap-2 mb-3 add-pane-title">
+                    <i class="bi bi-plus-square-fill text-primary fs-5"></i>
+                    <span class="fw-semibold">Add Task</span>
+                </div>
+
+                <form ng-submit="addTask()" novalidate class="add-form">
+                    <div class="mb-3">
+                        <label for="newTaskTitle" class="form-label">Task title *</label>
+                        <input id="newTaskTitle"
+                               type="text"
+                               class="form-control"
+                               ng-model="newTask.title"
+                               ng-keydown="handleAddKey($event)"
+                               required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="newTaskDesc" class="form-label">Description (optional)</label>
+                        <textarea id="newTaskDesc"
+                                  class="form-control"
+                                  rows="4"
+                                  ng-model="newTask.description"
+                                  ng-keydown="handleAddKey($event)"></textarea>
+                    </div>
+
+                    <button type="submit"
+                            class="btn w-100 d-flex justify-content-center align-items-center add-btn"
+                            ng-class="{'btn-success enabled-add-btn' : !!newTask.title, 'btn-secondary disabled-add-btn' : !newTask.title}"
+                            ng-disabled="!newTask.title">
+                        <i class="bi bi-plus-lg me-2"></i>
+                        <span>Add</span>
+                    </button>
+
+                    <div class="validation text-danger mt-2 small"
+                         ng-if="!newTask.title && (newTask.description || newTask.title !== '')">
+                        Title is required
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- RIGHT: Task List -->
+        <section class="list-pane card shadow-sm">
+            <div class="card-body list-pane-inner">
+
+                <div class="d-flex align-items-start justify-content-between flex-wrap mb-3">
+                    <div class="d-flex align-items-center gap-2 list-pane-title">
+                        <i class="bi bi-card-checklist text-primary fs-5"></i>
+                        <span class="fw-semibold">
+                            Your Tasks ({{tasks.length}} total)
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Empty state -->
+                <div ng-if="!filteredTasks().length"
+                     class="empty-state text-secondary fst-italic text-center py-4 fade-in-soft">
+                    Nothing here. Add something ✍️
+                </div>
+
+                <!-- Task list -->
+                <div class="todo-list-collection" ng-if="filteredTasks().length">
+                    <todo-item
+                            ng-repeat="task in filteredTasks() track by task.id"
+                            todo="task"
+                            index="$index"
+                            total-count="tasks.length"
+                            on-toggle="toggleTask(task)"
+                            on-delete="deleteTask(task)"
+                            on-move-up="moveUp(index)"
+                            on-move-down="moveDown(index)"
+                            on-save="persistAfterEdit()"
+                            class="todo-item-anim">
+                    </todo-item>
+                </div>
+            </div>
+
+            <!-- Footer stats -->
+            <div class="card-footer list-stats-row d-flex flex-wrap align-items-center gap-2 border-top">
+
+                <span class="stat-chip"
+                      ng-class="{'stat-chip--warning': (tasks | filter:{completed:false}).length > 0}">
+                    <i class="bi bi-circle stat-icon"></i>
+                    <span>{{ (tasks | filter:{completed:false}).length }} active</span>
+                </span>
+
+                <span class="stat-chip"
+                      ng-class="{'stat-chip--success': completedCount() > 0}">
+                    <i class="bi bi-check-circle-fill stat-icon"></i>
+                    <span>{{ (tasks | filter:{completed:true}).length }} done</span>
+                </span>
+
+                <button class="btn btn-link text-danger ms-auto p-0 clear-btn"
+                        ng-click="clearCompleted()"
+                        ng-disabled="(tasks | filter:{completed:true}).length===0">
+                    <i class="bi bi-trash me-1"></i>
+                    Clear completed
+                </button>
+            </div>
+        </section>
+
+    </section>
+</div>
