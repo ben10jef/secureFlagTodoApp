@@ -2,7 +2,7 @@
     'use strict';
 
     angular.module('todoApp')
-        .controller('MainController', ['$scope', 'todoStorage', '$route', function($scope, todoStorage, $route){
+        .controller('MainController', ['$scope', 'todoStorage', '$route', '$location', function($scope, todoStorage, $route, $location){
 
             $scope.tasks = todoStorage.load();
 
@@ -13,9 +13,20 @@
 
             $scope.currentFilter = ($route.current && $route.current.filterMode) ? $route.current.filterMode : 'all';
 
+            function syncFilterFromRoute() {
+                if ($route.current && $route.current.filterMode) {
+                    $scope.currentFilter = $route.current.filterMode;
+                } else {
+                    $scope.currentFilter = 'all';
+                }
+            }
+
+            syncFilterFromRoute();
+
             $scope.$on('$routeChangeSuccess', function(){
-                $scope.currentFilter = $route.current.filterMode || 'all';
+                syncFilterFromRoute();
             });
+
 
             // internal helper to persist to localStorage
             function persist(){
@@ -40,6 +51,7 @@
                 $scope.newTask = { title: '', description: '' };
 
                 persist();
+                $location.path('/all');
             };
 
             // keyboard: Enter to add
@@ -80,6 +92,17 @@
                 persist();
             };
 
+            $scope.reorderTasks = function(fromIndex, toIndex){
+                if (fromIndex === toIndex) { return; }
+
+                var moved = $scope.tasks.splice(fromIndex, 1)[0];
+                $scope.tasks.splice(toIndex, 0, moved);
+
+                // if you need to persist order, call persist() here
+                persist();
+            };
+
+
             $scope.filteredTasks = function(){
                 if($scope.currentFilter === 'active'){
                     return $scope.tasks.filter(function(t){ return !t.completed; });
@@ -102,5 +125,44 @@
                     return t.completed;
                 }).length;
             };
+
+            $scope.getAllCount = function(){
+                return $scope.tasks.length;
+            };
+
+            $scope.getActiveCount = function(){
+                return $scope.tasks.filter(function(t){ return !t.completed; }).length;
+            };
+
+            $scope.getCompletedCount = function(){
+                return $scope.tasks.filter(function(t){ return t.completed; }).length;
+            };
+
+// returns which tab is selected based on current route
+            $scope.isView = function(route){
+                return $location.path() === route;
+            };
+
+// change the active view
+            $scope.setView = function(route){
+                $location.path(route);
+            };
+
+            $scope.getEmptyMessage = function () {
+                var route = $location.path();
+
+                if (route === '/active') {
+                    return "All tasks are completed — great job staying organized! 🎉";
+                }
+
+                if (route === '/completed') {
+                    return "You haven’t completed any tasks yet. Keep going — you’ll get there! 💪";
+                }
+
+                // default = /all (or anything unexpected)
+                return "Your to-do list is empty. Add a new task to get started ✍️";
+            };
+
+
         }]);
 })();

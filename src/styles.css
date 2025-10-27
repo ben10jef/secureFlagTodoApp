@@ -9,7 +9,7 @@
   border-radius: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   /* subtle shadow to float the nav */
-  box-shadow: 0 8px 24px rgba(0,0,0,.03);
+  /*box-shadow: 0 8px 24px rgba(0,0,0,.03);*/
   position: sticky;
   top: 0;
   z-index: 1000;
@@ -208,9 +208,9 @@
 
 .add-pane-title i,
 .list-pane-title i {
-  color: #0d6efd; /* bootstrap primary */
-  text-shadow: 0 2px 2px rgba(13,110,253,.2);
-  transition: transform .18s ease;
+  /*color: #0d6efd; !* bootstrap primary *!*/
+  /*text-shadow: 0 2px 2px rgba(13,110,253,.2);*/
+  /*transition: transform .18s ease;*/
 }
 
 .add-pane:hover .add-pane-title i,
@@ -313,16 +313,16 @@
   flex-wrap: nowrap;
   align-items: flex-start;
   gap: .75rem;
-
+  cursor: pointer;
   background: #fff;
   border: 1px solid #dee2e6;        /* bootstrap border color */
   border-radius: .5rem;
 
   /* status bar on the left */
-  border-left: 4px solid transparent;
+  border-left: 6px solid transparent;
 
   padding: .75rem 1rem;
-  margin-bottom: .75rem;
+  margin-bottom: .25rem;
 
   box-shadow: 0 8px 16px rgba(0,0,0,.03);
   transition: box-shadow .18s ease, transform .18s ease, border-color .18s ease, background-color .18s ease;
@@ -341,12 +341,20 @@
 
 .todo-item.done {
   border-left-color: #198754; /* bootstrap success green */
-  background-color: rgba(25,135,84,.03);
+  /*background-color: rgba(25,135,84,.03);*/
+
 }
+.todo-item.done .todo-title,
+.todo-item.done .todo-desc {
+  text-decoration: line-through;
+  color: #6c757d; /* bootstrap-ish secondary grey */
+}
+
+
 
 .todo-item.pending {
   border-left-color: #dc3545; /* bootstrap danger red */
-  background-color: rgba(220,53,69,.015);
+  /*background-color: rgba(220,53,69,.015);*/
 }
 
 /* checkbox column */
@@ -384,8 +392,8 @@
   min-width: 0;
   border-radius: .5rem;
   width: 100%;
-  background: #f8f9fa; /* bootstrap light gray */
-  border: 1px solid #dee2e6;
+  background: #ffffff; /* bootstrap light gray */
+  border: none !important;
   padding: 1rem;
   box-shadow: inset 0 0 0 9999px rgba(255,255,255,.4);
   animation: fade-in-soft-key .2s ease both;
@@ -474,19 +482,53 @@
   border-bottom-left-radius: .5rem;
   border-bottom-right-radius: .5rem;
 }
+/* make chip behave like a real clickable control */
+.stat-chip {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #dee2e6;
+  background-clip: padding-box;
+  text-align: left;
+}
+
+.stat-chip:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px rgba(13,110,253,.3); /* blue-ish focus ring */
+}
+
+.stat-chip:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,.08);
+}
+
+/* pressed / active click feedback */
+.stat-chip:active {
+  transform: scale(.98);
+}
+
+/* active tab state */
+.stat-chip--active {
+  box-shadow: 0 0 0 3px rgba(13,110,253,.4);
+  border-color: #0d6efd;
+}
+
+/* optional: mute non-active filters a little */
+.stat-chip--muted {
+  opacity: .7;
+}
 
 .stat-chip {
   display: inline-flex;
   align-items: center;
   gap: .4rem;
-  background: #f8f9fa;
+  background: #002c4c;
   border: 1px solid #dee2e6;
-  border-radius: 999px;
+  border-radius: 8px;
   padding: .3rem .6rem;
   line-height: 1.2rem;
   font-size: .8rem;
-  color: #495057;
+  color: #ffffff;
   font-weight: 500;
+  cursor: pointer ;
   transition: box-shadow .18s ease, background-color .18s ease, border-color .18s ease, color .18s ease;
   box-shadow: 0 2px 4px rgba(0,0,0,.03);
 }
@@ -501,15 +543,29 @@
   transform: scale(1.15);
 }
 
+/* All = primary look */
+.stat-chip--primary {
+  background:   #ffffff;  /* very light blue background */
+  border-color: #1565c0;  /* medium blue border */
+  color:        #002c4c;  /* your dark navy text */
+
+
+  /*box-shadow: 0 6px 14px rgba(255,179,0,.25);*/
+}
+.stat-chip--primary .stat-icon {
+  color: #002c4c;
+}
+
 /* Active/incomplete = warning look */
 .stat-chip--warning {
-  background: #fff8e1;
-  border-color: #ffb300;
-  color: #ff6f00;
-  box-shadow: 0 6px 14px rgba(255,179,0,.25);
+  background:   #ffebee;  /* light red/pink bg */
+  border-color: #ef5350;  /* medium red border */
+  color:        #c62828;  /* dark red text */
+
+  /*box-shadow: 0 6px 14px rgba(255,179,0,.25);*/
 }
 .stat-chip--warning .stat-icon {
-  color: #ff6f00;
+  color: #c62828;
 }
 
 /* Completed = success look */
@@ -517,7 +573,7 @@
   background: #e8f5e9;
   border-color: #66bb6a;
   color: #2e7d32;
-  box-shadow: 0 6px 14px rgba(102,187,106,.25);
+  /*box-shadow: 0 6px 14px rgba(102,187,106,.25);*/
 }
 .stat-chip--success .stat-icon {
   color: #2e7d32;
@@ -546,4 +602,8 @@
   opacity: .4;
   cursor: not-allowed;
   text-decoration: none;
+}
+.todo-item.drag-over {
+  border: 1px dashed #0d6efd;
+  background-color: rgba(13,110,253,0.05);
 }

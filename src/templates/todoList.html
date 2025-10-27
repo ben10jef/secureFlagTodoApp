@@ -59,7 +59,7 @@
                     <div class="d-flex align-items-center gap-2 list-pane-title">
                         <i class="bi bi-card-checklist text-primary fs-5"></i>
                         <span class="fw-semibold">
-                            Your Tasks ({{tasks.length}} total)
+                            Your Tasks
                         </span>
                     </div>
                 </div>
@@ -67,48 +67,75 @@
                 <!-- Empty state -->
                 <div ng-if="!filteredTasks().length"
                      class="empty-state text-secondary fst-italic text-center py-4 fade-in-soft">
-                    Nothing here. Add something ✍️
+                    {{ getEmptyMessage() }}
                 </div>
+
 
                 <!-- Task list -->
                 <div class="todo-list-collection" ng-if="filteredTasks().length">
                     <todo-item
-                            ng-repeat="task in filteredTasks() track by task.id"
+                            ng-repeat="task in tasks track by task.id"
                             todo="task"
                             index="$index"
                             total-count="tasks.length"
                             on-toggle="toggleTask(task)"
                             on-delete="deleteTask(task)"
-                            on-move-up="moveUp(index)"
-                            on-move-down="moveDown(index)"
-                            on-save="persistAfterEdit()"
-                            class="todo-item-anim">
+                            on-move-up="moveTaskUp(index)"
+                            on-move-down="moveTaskDown(index)"
+                            on-save="saveTasks()"
+                            on-reorder="reorderTasks(fromIndex, toIndex)">
                     </todo-item>
+
+
                 </div>
             </div>
 
             <!-- Footer stats -->
             <div class="card-footer list-stats-row d-flex flex-wrap align-items-center gap-2 border-top">
 
-                <span class="stat-chip"
-                      ng-class="{'stat-chip--warning': (tasks | filter:{completed:false}).length > 0}">
+                <!-- ALL chip -->
+                <button type="button"
+                        class="stat-chip stat-chip--primary"
+                        ng-class="{
+                'stat-chip--active': isView('/all')
+            }"
+                        ng-click="setView('/all')">
+                    <i class="bi bi-list-task stat-icon"></i>
+                    <span>All ({{ tasks.length }})</span>
+                </button>
+
+                <!-- ACTIVE chip -->
+                <button type="button"
+                        class="stat-chip stat-chip--warning"
+                        ng-class="{
+                'stat-chip--active': isView('/active')
+            }"
+                        ng-click="setView('/active')">
                     <i class="bi bi-circle stat-icon"></i>
                     <span>{{ (tasks | filter:{completed:false}).length }} active</span>
-                </span>
+                </button>
 
-                <span class="stat-chip"
-                      ng-class="{'stat-chip--success': completedCount() > 0}">
+                <!-- COMPLETED chip -->
+                <button type="button"
+                        class="stat-chip stat-chip--success"
+                        ng-class="{
+                'stat-chip--active': isView('/completed')
+            }"
+                        ng-click="setView('/completed')">
                     <i class="bi bi-check-circle-fill stat-icon"></i>
                     <span>{{ (tasks | filter:{completed:true}).length }} done</span>
-                </span>
+                </button>
 
+                <!-- Clear completed goes to the far right -->
                 <button class="btn btn-link text-danger ms-auto p-0 clear-btn"
                         ng-click="clearCompleted()"
-                        ng-disabled="(tasks | filter:{completed:true}).length===0">
+                        ng-if="(tasks | filter:{completed:true}).length !== 0">
                     <i class="bi bi-trash me-1"></i>
                     Clear completed
                 </button>
             </div>
+
+
         </section>
 
     </section>

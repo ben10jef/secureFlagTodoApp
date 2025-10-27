@@ -20,19 +20,19 @@
                     '<span class="sf-brand-text ms-2">{{nav.brand.text}}</span>' +
                     '</div>' +
 
-                    '<nav class="sf-links" role="navigation">' +
-                    '<a ng-repeat="link in nav.links"' +
-                    ' class="sf-link text-decoration-none"' +
-                    ' ng-href="{{link.href}}"' +
-                    ' ng-class=' +
-                    '"{' +
-                    '\'sf-link--active\': nav.isSelected(link.key)' +
-                    '}"' +
-                    '>' +
-                    '<span class="sf-link-label">{{link.label}}</span>' +
-                    '<span class="sf-link-underline" ng-if="nav.isSelected(link.key)"></span>' +
-                    '</a>' +
-                    '</nav>' +
+                    // '<nav class="sf-links" role="navigation">' +
+                    // '<a ng-repeat="link in nav.links"' +
+                    // ' class="sf-link text-decoration-none"' +
+                    // ' ng-href="{{link.href}}"' +
+                    // ' ng-class=' +
+                    // '"{' +
+                    // '\'sf-link--active\': nav.isSelected(link.key)' +
+                    // '}"' +
+                    // '>' +
+                    // '<span class="sf-link-label">{{link.label}}</span>' +
+                    // '<span class="sf-link-underline" ng-if="nav.isSelected(link.key)"></span>' +
+                    // '</a>' +
+                    // '</nav>' +
 
                     '</div>' +
 
