@@ -74,7 +74,7 @@
                 <!-- Task list -->
                 <div class="todo-list-collection" ng-if="filteredTasks().length">
                     <todo-item
-                            ng-repeat="task in tasks track by task.id"
+                            ng-repeat="task in filteredTasks() track by task.id"
                             todo="task"
                             index="$index"
                             total-count="tasks.length"
@@ -85,9 +85,8 @@
                             on-save="saveTasks()"
                             on-reorder="reorderTasks(fromIndex, toIndex)">
                     </todo-item>
-
-
                 </div>
+
             </div>
 
             <!-- Footer stats -->

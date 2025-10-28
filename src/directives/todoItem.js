@@ -83,7 +83,7 @@
                     // '</button>' +
 
                     '<button class="btn btn-outline-danger btn-sm todo-action-btn" ' +
-                    'ng-click="remove($event)"  ng-if="!todo.completed" title="Delete">' +
+                    'ng-click="remove($event)" title="Delete">' +
                     '<i class="bi bi-trash-fill"></i>' +
                     '</button>' +
 

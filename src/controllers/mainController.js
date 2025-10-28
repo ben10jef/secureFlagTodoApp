@@ -103,15 +103,18 @@
             };
 
 
-            $scope.filteredTasks = function(){
-                if($scope.currentFilter === 'active'){
-                    return $scope.tasks.filter(function(t){ return !t.completed; });
+            $scope.filteredTasks = function () {
+                if ($scope.currentFilter === 'active') {
+                    return $scope.tasks.filter(function (t) { return !t.completed; });
                 }
-                if($scope.currentFilter === 'completed'){
-                    return $scope.tasks.filter(function(t){ return t.completed; });
+
+                if ($scope.currentFilter === 'completed') {
+                    return $scope.tasks.filter(function (t) { return t.completed; });
                 }
+
                 return $scope.tasks;
             };
+
 
             $scope.clearCompleted = function(){
                 $scope.tasks = $scope.tasks.filter(function(t){
